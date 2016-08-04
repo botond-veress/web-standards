@@ -37,6 +37,6 @@ The keep-it-simple rule applies here. Although your inner-grammatician will tell
 
 After the resources are defined you need to find out what kind of actions should be applied to them. The basic CRUD actions can be omitted by simply using the HTTP request methods mentioned above. If an action doesn't fit in the CRUD operations there are two main approaches you can choose from:
 
-1. 
+1. Treat it like a sub-resource and modify it with CRUD operations
 
 **You should never ever** leak any implementation details via your API.
