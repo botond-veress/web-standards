@@ -20,7 +20,7 @@ The keep-it-simple rule applies here. Although your inner-grammatician will tell
 #### GET
 
 - Retrieves a resource or a list of resources
-- It should never updates a resource
+- It should **never** updates a resource
 - Shouldn't even update the access logs
 - Use query strings insteads of request body
 
@@ -125,9 +125,9 @@ After the resources are defined you need to find out what kind of actions should
 
 Use SSL whenever possible. It provides encryption even through unencrypted networks and simplies authentication efforts. Simple API tokens will work just well.
 
-*Be careful!* Once you enabled SSL on your API don't allow unsecured connections (e.g. plain http connections).
+**Be careful!** Once you enabled SSL on your API don't allow unsecured connections (e.g. plain http connections).
 
-> *Note:* Setup SSL on the load-balancer instead of the servers whenever possible.
+> **Note:** Setup SSL on the load-balancer instead of the servers whenever possible.
 
 ### Compression
 
@@ -146,4 +146,4 @@ Accept-Encoding: gzip
 User-Agent: my program (gzip)
 ```
 
-> *Note:* Setup compression on the load-balancer instead of the servers whenever possible.
+> **Note:** Setup compression on the load-balancer instead of the servers whenever possible.
