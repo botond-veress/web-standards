@@ -37,6 +37,29 @@ The keep-it-simple rule applies here. Although your inner-grammatician will tell
 
 After the resources are defined you need to find out what kind of actions should be applied to them. The basic CRUD actions can be omitted by simply using the HTTP request methods mentioned above. If an action doesn't fit in the CRUD operations there are two main approaches you can choose from:
 
-1. Treat it like a sub-resource and modify it with CRUD operations
+1. Treat it like a sub-resource and modify it with CRUD operations. E.g. `PUT /posts/31/like` to like a post and `DELETE /posts/31/like` to dislike the post.
+1. There are cases when you can't map the action to a single resource. In this case naming the endpoint with the name of the action makes the most sense e.g. `/search`, `/sign-in`, etc.
 
 **You should never ever** leak any implementation details via your API.
+
+## Security and optimization
+
+### SSL
+
+Use SSL whenever possible. It provides encryption even through unencrypted networks and simplies authentication efforts. Simple API tokens will work just well.
+
+*Be careful!* Once you enabled SSL on your API don't allow unsecured connections (e.g. plain http connections).
+
+### Gzip
+
+Up to 80% bandwidth saving can be achieved when using gzip compression (according to Twitter and Stack Exchange). Although this requires additional CPU time to (un)compress the results, the trade-off with network costs usually makes it very worthwhile.
+
+Most frameworks provide an easy way to setup gzip compression and most of the time you can also configure a minimum response size which the compression is enabled on. This way you don't overload the CPU with compressing tiny chuncks of responses.
+
+In order to receive a gzip-encoded response you must do two things: Set an `Accept-Encoding` header, and modify your user agent to contain the string gzip. Here is an example of properly formed HTTP headers for enabling gzip compression:
+
+```
+Accept-Encoding: gzip
+User-Agent: my program (gzip)
+```
+
