@@ -149,11 +149,11 @@ Indicates that the request was successfully received, understood and accepted by
 
 #### 4xx - Client errors
 
-Intended for cases in which the client seems to have erred. The server SHOULD include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These status codes are applicable to almost any request method.
+Intended for cases in which the client seems to have erred. The server **should** include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These status codes are applicable to almost any request method.
 
 #### 5xx - Server errors
 
-The server is aware that it has erred or is incapable of performing the request. The server SHOULD include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These response codes are applicable to any request method.
+The server is aware that it has erred or is incapable of performing the request. The server **should** include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These response codes are applicable to any request method.
 
 > Only a few of the many possible error and status codes are commonly seen on the Internet.
 
@@ -188,7 +188,7 @@ The server is aware that it has erred or is incapable of performing the request.
 - `405 Method Not Allowed` - When an HTTP method is being requested that isn't allowed for the resource or the authenticated user.
 - `500 Internal Server Error` The server encountered an unexpected condition, which prevented it from fulfilling the request. 
 - `501 Not Implemented` - The server does not support the functionality required to fulfill the request. This is the appropriate response when the server does not recognize the request method and is not capable of supporting it for any resource.
-- `503 Service Unavailable` - The server is currently unable to handle the request due to a temporary overloading or maintenance of the server. The implication is that this is a temporary condition which will be alleviated after some delay. If known, the length of the delay may be indicated in a Retry-After header. If no Retry-After is given, the client SHOULD handle the response as it would for a 500 response.
+- `503 Service Unavailable` - The server is currently unable to handle the request due to a temporary overloading or maintenance of the server. The implication is that this is a temporary condition which will be alleviated after some delay. If known, the length of the delay may be indicated in a Retry-After header. If no Retry-After is given, the client **should** handle the response as it would for a 500 response.
 
 ### Allow overriding HTTP method
 
