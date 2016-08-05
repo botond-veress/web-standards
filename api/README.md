@@ -1,5 +1,14 @@
+# API Standards
 
+## Table of Contents
 
+  1. [Key Requirements](#key-requirements)
+  1. [Resources](#resources)
+  1. [HTTP Request Methods](#http-request-methods)
+  1. [Url Naming](#url-naming)
+  1. [Response](#response)
+  1. [Security and Optimization](#security-and-optimization)
+  1. [Version Your API](#version-your-api)
 
 ## Key Requirements
 
@@ -9,18 +18,42 @@
 
 ## Resources
 
-The principles of REST consist in separating the API into logical resources. The HTTP request methods `GET`, `POST`, `PUT`, `PATCH` and `DELETE` have specific meaning in manipulating these.
+The principles of REST consist in separating the API into logical resources. These aren't necessarily the representation of a single internal model.
 
 ### Naming the resources
 
-All the resources should be nouns and **not** verbs (e.g. users, blogs, posts, comments, etc.). These aren't necessarily the representation of a single internal model.
+All the resources should be nouns and **not** verbs (e.g. users, blogs, posts, comments, etc.).
 
 #### Should the endpoint name be singular or plural?
 The keep-it-simple rule applies here. Although your inner-grammatician will tell you it's wrong to describe a single instance of a resource using a plural, the pragmatic answer is to keep the URL format consistent and always use a **plural**.
 
-### HTTP request methods
+### Relations
 
-#### GET
+If a resource can only exist within another resource these are the RESTful principles you can use:
+
+- `GET /posts/31/comments`        - Retrieves a list of comments for post with id 31.
+- `POST /posts/31/comments`       - Creates a new comment on post with id 31.
+- `GET /posts/31/comments/25`     - Retrieves the comment with id 25 on post with id 31.
+- `PUT /posts/31/comments/25`     - Updates the comment with id 25 on post with id 31.
+- `PATCH /posts/31/comments/25`   - Partially updates the comment with id 25 on post with id 31.
+- `DELETE /posts/31/comments/25`  - Deletes the comment with id 25 on post with id 31.
+
+If a resource can exist independently it's advised to just include the resource's identifier in the parent. Alternatively if the client needs multiple related resources at the same time they should be bundled together into the same response to reduce the number of requests.
+
+### Actions
+
+After the resources are defined you need to find out what kind of actions should be applied to them. The basic CRUD actions can be omitted by simply using the HTTP request methods mentioned above. If an action doesn't fit into the CRUD operations there are two main approaches you can choose from:
+
+1. Treat it like a sub-resource and modify it with CRUD operations. E.g. `PUT /posts/31/like` to like the post and `DELETE /posts/31/like` to dislike the post.
+1. There are cases when you can't map the action to a single resource. In this case naming the endpoint with the name of the action makes the most sense, e.g. `/search`, `/sign-in`, etc.
+
+**You should never ever** leak any implementation details via your API.
+
+## HTTP Request Methods
+
+The HTTP request methods `GET`, `POST`, `PUT`, `PATCH` and `DELETE` have specific meaning in manipulating these.
+
+### GET
 
 - Retrieves a resource or a list of resources.
 - It should **never** update a resource.
@@ -37,7 +70,7 @@ To retrieve the post with id 31:
 GET /posts/31
 ```
 
-#### POST
+### POST
 
 - Creates a resource.
 - It should be used when the server has to generate a unique key for the created resource.
@@ -55,7 +88,7 @@ Request payload:
 
 > The newly created resource (with a unique identifier) should be returned in the response body.
 
-#### PUT
+### PUT
 
 - Creates/updates a resource.
 - Multiple PUT requests to the same URL don't create/update duplicate records.
@@ -73,7 +106,7 @@ Request payload:
 
 > If creating/updating the resource doesn't trigger unpredicted changes in the underlaying data there is no need to return the resource in the response body.
 
-#### PATCH
+### PATCH
 
 - Partially updates a resource.
 - Updated attributes of the resource should be provided only.
@@ -89,7 +122,7 @@ Request payload:
 
 > No response body should be returned.
 
-#### DELETE
+### DELETE
 
 - Deletes a resource.
 
@@ -100,29 +133,7 @@ DELETE /posts/31
 
 > No response body should be returned.
 
-### Relations
-
-If a resource can only exist within another resource these are the RESTful principles you can use:
-
-- `GET /posts/31/comments`        - Retrieves a list of comments for post with id 31.
-- `POST /posts/31/comments`       - Creates a new comment on post with id 31.
-- `GET /posts/31/comments/25`     - Retrieves the comment with id 25 on post with id 31.
-- `PUT /posts/31/comments/25`     - Updates the comment with id 25 on post with id 31.
-- `PATCH /posts/31/comments/25`   - Partially updates the comment with id 25 on post with id 31.
-- `DELETE /posts/31/comments/25`  - Deletes the comment with id 25 on post with id 31.
-
-If a resource can exist independently it's advised to just include the resource's identifier in the parent. Alternatively if the client needs multiple related resources at the same time they should be bundled together into the same response to reduce the number of requests.
-
-## Actions
-
-After the resources are defined you need to find out what kind of actions should be applied to them. The basic CRUD actions can be omitted by simply using the HTTP request methods mentioned above. If an action doesn't fit into the CRUD operations there are two main approaches you can choose from:
-
-1. Treat it like a sub-resource and modify it with CRUD operations. E.g. `PUT /posts/31/like` to like the post and `DELETE /posts/31/like` to dislike the post.
-1. There are cases when you can't map the action to a single resource. In this case naming the endpoint with the name of the action makes the most sense, e.g. `/search`, `/sign-in`, etc.
-
-**You should never ever** leak any implementation details via your API.
-
-## URL naming
+## URL Naming
 
 It is a good practice to have all resources and actions written in `lowercase-separated-by-hyphens`, e.g. `/sign-in`, `/reset-password`, etc.
 
@@ -224,7 +235,7 @@ For example:
 }
 ```
 
-## Security and optimization
+## Security and Optimization
 
 ### SSL
 
@@ -253,6 +264,6 @@ User-Agent: my program (gzip)
 
 > **Note:** Setup compression on the load-balancer instead of the servers whenever possible.
 
-## Version your API
+## Version Your API
 
 Make the API version mandatory and do not release an unversioned API. Use a simple ordinal number and avoid dot notation such as 2.5, e.g. `/api/v1/posts`.
