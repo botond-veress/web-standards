@@ -119,6 +119,11 @@ After the resources are defined you need to find out what kind of actions should
 
 **You should never ever** leak any implementation details via your API.
 
+## URL naming
+
+It is a good practice to have all resources and actions written in `lowercase-separated-by-hyphens`.
+For example: `/sign-in`, `/reset-password`, etc.
+
 ## Response
 
 ### HTTP Status Codes
@@ -178,6 +183,43 @@ Some proxies support only POST and GET methods. To support a RESTful API with th
 Use the custom HTTP Header X-HTTP-Method-Override to override the POST Method.
 
 ### Error handling
+
+The API should provide a useful error message in a known consumable format. The representation of an error should be no different than the representation of any resource, just with its own set of fields.
+The API should always return sensible HTTP status codes. A JSON error body should provide a few things for the developer - a useful error message, a unique error code (that can be looked up for more details in the docs) and possibly a detailed description. JSON output representation for something like this would look like:
+
+```javascript
+{
+  "code" : 1234,
+  "message" : "Comment could not be added.",
+  "description" : "The post you are trying to add the comment to was archived."
+}
+```
+
+> In non-production environments the error resource might contain additional fields (e.g. stacktrace, timestamp, etc).
+
+### Casing
+
+To provide better readability all the resource fields should be written in `snake_case`.
+For example:
+```javascript
+{
+  "created_at": 1470191016653,
+  "updated_at": 1470391016653
+}
+```
+
+#### Best practices to name fields
+
+- For dates and timestamps use the `_at` suffix whenever possible, e.g `"created_at": 1470191016653`.
+- For booleans never include `is_` or `has_` prefixes, instead try to use adjectives and verbs in past tense, e.g. `"completed: true"`, `"locked": false`, `"visible": true`, etc.
+- For lists try to use the plural form instead of suffixing it with `_list`, e.g. ~~`category_list`~~ should become `categories`.
+- For resource identifiers use the field `id`. When there is a reference to another resource then prefix it with the name of the relation, e.g. a post would have an author as `author_id`:
+```javascript
+{
+  "id": 1,
+  "author_id": 12
+}
+```
 
 ## Security and optimization
 
