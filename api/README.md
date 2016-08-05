@@ -20,9 +20,9 @@ The keep-it-simple rule applies here. Although your inner-grammatician will tell
 #### GET
 
 - Retrieves a resource or a list of resources
-- It should **never** updates a resource
+- It should **never** update a resource
 - Shouldn't even update the access logs
-- Use query strings insteads of request body
+- Use query strings instead of request body
 
 To retrieve the list of posts filtered by the keyword "awesome":
 ```HTTP
@@ -50,12 +50,12 @@ Request payload:
 }
 ```
 
-> The newly created resource (with an unique identifier) should be returned in the response body.
+> The newly created resource (with a unique identifier) should be returned in the response body.
 
 #### PUT
 
 - Creates/updates a resource
-- Multiple PUT requests to the same URL doesn't create/update duplicate records
+- Multiple PUT requests to the same URL don't create/update duplicate records
 - It should be used when the client is aware of the url of the resource
 
 To update the post with id 31:
