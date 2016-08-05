@@ -123,25 +123,61 @@ After the resources are defined you need to find out what kind of actions should
 
 ### HTTP Status Codes
 
+A three-digit code indicates the result of each HTTP request made to the server.
+
+#### 2xx - Success
+
+Indicates that the request was successfully received, understood and accepted by the API.
+
+#### 4xx - Client errors
+
+Intended for cases in which the client seems to have erred. The server SHOULD include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These status codes are applicable to almost any request method.
+
+#### 5xx - Server errors
+
+The server is aware that it has erred or is incapable of performing the request. The server SHOULD include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These response codes are applicable to any request method.
+
+> Only a few of the many possible error and status codes are commonly seen on the Internet.
+
 #### GET
-- `200 OK` - The request is successful.
+- `200 OK` - The request is successful and the resource is retrieved.
 - `404 Not Found` - The requested resource does not exist (in the current context).
 
 #### POST
-- `200 OK` - The request didn't result in a creation or resulted the creation of multiple resources.
-- `201 Created` - The request resulted in the creation of a resource.
+- `200 OK` - The request didn't result in a creation or multiple resources had been created which are retrieved.
+- `201 Created` - A new resource has been created which is retrieved.
+- `204 No Content` - The request didn't result in a creation or multiple resources had been created.
 
 #### PUT
+- `200 OK` - An existing resource has been modified which is retrieved.
+- `201 Created` - A new resource has been created which is retrieved.
+- `204 No Content` - An existing resource has been modified.
 
 #### PATCH
+- `200 OK` - An existing resource has been modified which is retrieved.
+- `204 No Content` - An existing resource has been modified.
+- `404 Not Found` - The requested resource does not exist (in the current context).
 
 #### DELETE
+- `200 OK` - An existing resource has been deleted which is retrieved.
+- `202 Accepted` - An existing resource has been marked for deletion.
+- `204 No Content` - An existing resource has been deleted.
 
 #### In all cases
 - `400 Bad Request` - The request is malformed, such as if the body does not parse or it has validation errors.
 - `401 Unauthorized` - When no or invalid authentication details are provided. Also useful to trigger an auth popup on web or take the user to the login screen on mobile.
 - `403 Forbidden` - When authentication succeeded but authenticated user doesn't have access to the resource.
 - `405 Method Not Allowed` - When an HTTP method is being requested that isn't allowed for the resource or the authenticated user.
+- `500 Internal Server Error` The server encountered an unexpected condition, which prevented it from fulfilling the request. 
+- `501 Not Implemented` - The server does not support the functionality required to fulfill the request. This is the appropriate response when the server does not recognize the request method and is not capable of supporting it for any resource.
+- `503 Service Unavailable` - The server is currently unable to handle the request due to a temporary overloading or maintenance of the server. The implication is that this is a temporary condition which will be alleviated after some delay. If known, the length of the delay may be indicated in a Retry-After header. If no Retry-After is given, the client SHOULD handle the response as it would for a 500 response.
+
+### Allow overriding HTTP method
+
+Some proxies support only POST and GET methods. To support a RESTful API with these limitations, the API needs a way to override the HTTP method.
+Use the custom HTTP Header X-HTTP-Method-Override to override the POST Method.
+
+### Error handling
 
 ## Security and optimization
 
@@ -171,3 +207,7 @@ User-Agent: my program (gzip)
 ```
 
 > **Note:** Setup compression on the load-balancer instead of the servers whenever possible.
+
+## Version your API
+
+Make the API version mandatory and do not release an unversioned API. Use a simple ordinal number and avoid dot notation such as 2.5. For example `/api/v1/posts`
