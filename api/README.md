@@ -119,6 +119,30 @@ After the resources are defined you need to find out what kind of actions should
 
 **You should never ever** leak any implementation details via your API.
 
+## Response
+
+### HTTP Status Codes
+
+#### GET
+- `200 OK` - The request is successful.
+- `404 Not Found` - The requested resource does not exist (in the current context).
+
+#### POST
+- `200 OK` - The request didn't result in a creation or resulted the creation of multiple resources.
+- `201 Created` - The request resulted in the creation of a resource.
+
+#### PUT
+
+#### PATCH
+
+#### DELETE
+
+#### In all cases
+- `400 Bad Request` - The request is malformed, such as if the body does not parse or it has validation errors.
+- `401 Unauthorized` - When no or invalid authentication details are provided. Also useful to trigger an auth popup on web or take the user to the login screen on mobile.
+- `403 Forbidden` - When authentication succeeded but authenticated user doesn't have access to the resource.
+- `405 Method Not Allowed` - When an HTTP method is being requested that isn't allowed for the resource or the authenticated user.
+
 ## Security and optimization
 
 ### SSL
