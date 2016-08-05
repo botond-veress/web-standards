@@ -1,8 +1,11 @@
+
+
+
 ## Key Requirements
 
-- It should use **web standards** if it doesn't feel unnatural
-- It should be consistent, intuitive and simple
-- It should be developer friendly and explorable
+- It should use **web standards** if it doesn't feel unnatural.
+- It should be consistent, intuitive and simple.
+- It should be developer friendly and explorable.
 
 ## Resources
 
@@ -19,10 +22,10 @@ The keep-it-simple rule applies here. Although your inner-grammatician will tell
 
 #### GET
 
-- Retrieves a resource or a list of resources
-- It should **never** update a resource
-- Shouldn't even update the access logs
-- Use query strings instead of request body
+- Retrieves a resource or a list of resources.
+- It should **never** update a resource.
+- Shouldn't even update the access logs.
+- Use query strings instead of request body.
 
 To retrieve the list of posts filtered by the keyword "awesome":
 ```HTTP
@@ -36,9 +39,9 @@ GET /posts/31
 
 #### POST
 
-- Creates a resource
-- It should be used when the server has to generate a unique key for the created resource
-- Multiple POST requests to the same URL create duplicate records
+- Creates a resource.
+- It should be used when the server has to generate a unique key for the created resource.
+- Multiple POST requests to the same URL create duplicate records.
 
 To create a post:
 ```HTTP
@@ -54,9 +57,9 @@ Request payload:
 
 #### PUT
 
-- Creates/updates a resource
-- Multiple PUT requests to the same URL don't create/update duplicate records
-- It should be used when the client is aware of the url of the resource
+- Creates/updates a resource.
+- Multiple PUT requests to the same URL don't create/update duplicate records.
+- It should be used when the client is aware of the url of the resource.
 
 To update the post with id 31:
 ```HTTP
@@ -72,8 +75,8 @@ Request payload:
 
 #### PATCH
 
-- Partially updates a resource
-- Updated attributes of the resource should be provided only
+- Partially updates a resource.
+- Updated attributes of the resource should be provided only.
 
 To update the content of the post with id 31:
 ```HTTP
@@ -88,7 +91,7 @@ Request payload:
 
 #### DELETE
 
-- Deletes a resource
+- Deletes a resource.
 
 To delete the post with id 31:
 ```HTTP
@@ -101,12 +104,12 @@ DELETE /posts/31
 
 If a resource can only exist within another resource these are the RESTful principles you can use:
 
-- `GET /posts/31/comments`        - Retrieves a list of comments for post with id 31
-- `POST /posts/31/comments`       - Creates a new comment on post with id 31
-- `GET /posts/31/comments/25`     - Retrieves the comment with id 25 on post with id 31
-- `PUT /posts/31/comments/25`     - Updates the comment with id 25 on post with id 31
-- `PATCH /posts/31/comments/25`   - Partially updates the comment with id 25 on post with id 31
-- `DELETE /posts/31/comments/25`  - Deletes the comment with id 25 on post with id 31
+- `GET /posts/31/comments`        - Retrieves a list of comments for post with id 31.
+- `POST /posts/31/comments`       - Creates a new comment on post with id 31.
+- `GET /posts/31/comments/25`     - Retrieves the comment with id 25 on post with id 31.
+- `PUT /posts/31/comments/25`     - Updates the comment with id 25 on post with id 31.
+- `PATCH /posts/31/comments/25`   - Partially updates the comment with id 25 on post with id 31.
+- `DELETE /posts/31/comments/25`  - Deletes the comment with id 25 on post with id 31.
 
 If a resource can exist independently it's advised to just include the resource's identifier in the parent. Alternatively if the client needs multiple related resources at the same time they should be bundled together into the same response to reduce the number of requests.
 
@@ -115,14 +118,13 @@ If a resource can exist independently it's advised to just include the resource'
 After the resources are defined you need to find out what kind of actions should be applied to them. The basic CRUD actions can be omitted by simply using the HTTP request methods mentioned above. If an action doesn't fit into the CRUD operations there are two main approaches you can choose from:
 
 1. Treat it like a sub-resource and modify it with CRUD operations. E.g. `PUT /posts/31/like` to like the post and `DELETE /posts/31/like` to dislike the post.
-1. There are cases when you can't map the action to a single resource. In this case naming the endpoint with the name of the action makes the most sense e.g. `/search`, `/sign-in`, etc.
+1. There are cases when you can't map the action to a single resource. In this case naming the endpoint with the name of the action makes the most sense, e.g. `/search`, `/sign-in`, etc.
 
 **You should never ever** leak any implementation details via your API.
 
 ## URL naming
 
-It is a good practice to have all resources and actions written in `lowercase-separated-by-hyphens`.
-For example: `/sign-in`, `/reset-password`, etc.
+It is a good practice to have all resources and actions written in `lowercase-separated-by-hyphens`, e.g. `/sign-in`, `/reset-password`, etc.
 
 ## Response
 
@@ -214,6 +216,7 @@ For example:
 - For booleans never include `is_` or `has_` prefixes, instead try to use adjectives and verbs in past tense, e.g. `"completed: true"`, `"locked": false`, `"visible": true`, etc.
 - For lists try to use the plural form instead of suffixing it with `_list`, e.g. ~~`category_list`~~ should become `categories`.
 - For resource identifiers use the field `id`. When there is a reference to another resource then prefix it with the name of the relation, e.g. a post would have an author as `author_id`:
+
 ```javascript
 {
   "id": 1,
@@ -252,4 +255,4 @@ User-Agent: my program (gzip)
 
 ## Version your API
 
-Make the API version mandatory and do not release an unversioned API. Use a simple ordinal number and avoid dot notation such as 2.5. For example `/api/v1/posts`
+Make the API version mandatory and do not release an unversioned API. Use a simple ordinal number and avoid dot notation such as 2.5, e.g. `/api/v1/posts`.
