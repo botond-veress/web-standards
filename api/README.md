@@ -197,14 +197,16 @@ Use the custom HTTP Header X-HTTP-Method-Override to override the POST Method.
 
 ### Error handling
 
-The API should provide a useful error message in a known consumable format. The representation of an error should be no different than the representation of any resource, just with its own set of fields.
-The API should always return sensible HTTP status codes. A JSON error body should provide a few things for the developer - a useful error message, a unique error code (that can be looked up for more details in the docs) and possibly a detailed description. JSON output representation for something like this would look like:
+The API should provide a useful error message in a known consumable format and should always return sensible HTTP status codes. The representation of an error should be no different than the representation of any other resource, just with its own set of fields. The error resource should provide a few things to the developer and the client - a useful error message and a unique error code is a must.
+
+The message must describe the reason of the error and might provide a solution to fix it. The unique error code/constant should be a string and should describe the actual error in 2-3 words. The constant should be written in uppercase and the words should be delimited by underscores, e.g. `EMAIL_NOT_VERIFIED`, `TOKEN_EXPIRED`, etc. These constants can be used as keys to implement internationalization and also can help the developers and clients to properly handle specific errors without forcing them to read through the entire specification.
+
+JSON output representation for something like this would look like:
 
 ```javascript
 {
-  "code" : 1234,
-  "message" : "Comment could not be added.",
-  "description" : "The post you are trying to add the comment to was archived."
+  "code": "POST_ARCHIVED",
+  "message": "The post you are trying to add the comment to was archived."
 }
 ```
 
