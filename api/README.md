@@ -396,25 +396,40 @@ For example:
 }
 ```
 
-> If the page requested is lower than 1 or it's not a valid number the first page is returned.If the page requested is higher than the # of available pages the last page is returned.
+> If the page requested is lower than 1 or it's not a valid number the first page is returned.
+
+> If the page requested is higher than the # of available pages the last page is returned.
 
 ### Resource based
 
 It is also known as **infinite scroll**.
+Two query parameters can be provided:
+- `since_id`: it's the id of the last resource received in the previous result set
+- `count`: it's the number of elements requested per page
 
-Request:
+For example:
 ```javascript
 GET /posts/23/comments
 // or
-GET /posts/23/comments?count=5&since_id=547
+GET /posts/23/comments?since_id=547&count=5
 ```
 
-Response:
+The response is a list containing the requested resources.
+
+For example:
 ```javascript
 [
   // ...
 ]
 ```
+
+> If the `since_id` in not present the first result set is returned.
+
+> If the `since_id` references an unexisting resource an empty result set is returned.
+
+> The last result set is reached if the number of received resources is less than requested (via the `count` parameter).
+
+The `since_id` is used (instead of `date`) because this way the sorting and paging algorithm behind the API remains hidden from the client.
 
 ## Security and Optimization
 
