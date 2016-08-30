@@ -7,6 +7,7 @@
   1. [HTTP Request Methods](#http-request-methods)
   1. [Url Naming](#url-naming)
   1. [Response](#response)
+  1. [Serialization Practices](#serialization-practices)
   1. [Security and Optimization](#security-and-optimization)
   1. [Version Your API](#version-your-api)
 
@@ -212,11 +213,11 @@ JSON output representation for something like this would look like:
 
 > In non-production environments the error resource might contain additional fields (e.g. stacktrace, timestamp, etc).
 
-### Serialization Practices
+## Serialization Practices
 
 To provide better readability all the resource fields should be written in `snake_case`.
 
-#### Identifier
+### Identifier
 
 Use the field `id`. When there is a reference to another resource then prefix it with the name of the relation, e.g. a post would have an author as `author_id`:
 
@@ -227,7 +228,7 @@ Use the field `id`. When there is a reference to another resource then prefix it
 }
 ```
 
-#### Boolean
+### Boolean
 
 Never include `is_` or `has_` prefixes, instead try to use adjectives and verbs in past tense.
 
@@ -242,7 +243,7 @@ For example:
 
 > In case of having multiple flag-like booleans in the response consider using **bitmasking** instead.
 
-#### Bitmask
+### Bitmask
 
 Multiple boolean flags can be transformed into numerical flags which are combined into a single numeric value using bitmasking.
 
@@ -278,7 +279,7 @@ const CAN_VOTE_COMMENT   = 0b1000; // 8
 permission.comment = CAN_CREATE_COMMENT | CAN_VOTE_COMMENT; // 1 | 8 = 9
 ```
 
-#### Count
+### Count
 
 Use the the name of the resource which you have counted with the `_count` suffix. Try to avoid the plural form of the resource name because that should mark a list and not a count.
 
@@ -289,7 +290,7 @@ For example:
 }
 ```
 
-#### Date
+### Date
 
 Use the `_at` suffix whenever possible.
 Dates should be represented by timestamps (milliseconds since 1970.01.01).
@@ -302,7 +303,7 @@ For example:
 }
 ```
 
-#### List
+### List
 
 Try to use the plural form instead of suffixing it with `_list`, e.g. ~~`category_list`~~ should become `categories`.
 
@@ -321,11 +322,11 @@ For example:
 ```
 > If a request results in a list return the list directly instead of wrapping it into an object with a single field.
 
-#### Reference to another resource
+### Reference to another resource
 
 When referencing a resource from within another resource there are two approaches:
 
-##### Id notation
+#### Id notation
 
 Include only the id of the referenced resource as a field named after the relation of the two resources suffixed with `_id`.
 Use it if the client doesn't need to display any information about the referenced resource at this stage or already has the information referenced by that id.
@@ -339,7 +340,7 @@ For example a blog post would look like this:
 }
 ```
 
-##### Resource notation
+#### Resource notation
 
 Include the minimal required representation of the referenced resource named after the relation of the two resources.
 Use it if the client needs to display information about the referenced resource and it doesn't have the information yet.
