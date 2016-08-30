@@ -8,6 +8,7 @@
   1. [Url Naming](#url-naming)
   1. [Response](#response)
   1. [Serialization Practices](#serialization-practices)
+  1. [Pagination] (#pagination)
   1. [Security and Optimization](#security-and-optimization)
   1. [Version Your API](#version-your-api)
 
@@ -357,6 +358,62 @@ For example a blog post would look like this:
     "name": "Johnny Pack"
   }
 }
+```
+
+## Pagination
+
+The pagination should work without parameters as well and it should return the first set of elements.
+
+### Page based
+
+Two query parameters can be provided:
+- `page`: it's the one-based index of the page
+- `count`: it's the number of elements requested per page
+
+For example:
+```javascript
+GET /posts/23/comments
+// or
+GET /posts/23/comments?page=1&count=5
+```
+
+The response conists of two parts:
+- `elements`: contains the list of requested resources
+- `page`: contains the meta-data related to pagination
+  - `index`: shows the current page index
+  - `max`: shows the number of available pages
+
+For example:
+```javascript
+{
+  "elements" : [
+    // ...
+  ],
+  "page": {
+    "index": 1,
+    "max": 10
+  }
+}
+```
+
+> If the page requested is lower than 1 or it's not a valid number the first page is returned.If the page requested is higher than the # of available pages the last page is returned.
+
+### Resource based
+
+It is also known as **infinite scroll**.
+
+Request:
+```javascript
+GET /posts/23/comments
+// or
+GET /posts/23/comments?count=5&since_id=547
+```
+
+Response:
+```javascript
+[
+  // ...
+]
 ```
 
 ## Security and Optimization
