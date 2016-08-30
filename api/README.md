@@ -8,7 +8,7 @@
   1. [Url Naming](#url-naming)
   1. [Response](#response)
   1. [Serialization Practices](#serialization-practices)
-  1. [Pagination] (#pagination)
+  1. [Pagination](#pagination)
   1. [Security and Optimization](#security-and-optimization)
   1. [Version Your API](#version-your-api)
 
@@ -106,7 +106,7 @@ Request payload:
 }
 ```
 
-> If creating/updating the resource doesn't trigger unpredicted changes in the underlaying data there is no need to return the resource in the response body.
+> If creating/updating the resource doesn't trigger unpredicted changes in the underlying data there is no need to return the resource in the response body.
 
 ### PATCH
 
@@ -377,7 +377,7 @@ GET /posts/23/comments
 GET /posts/23/comments?page=1&count=5
 ```
 
-The response conists of two parts:
+The response consists of two parts:
 - `elements`: contains the list of requested resources
 - `page`: contains the meta-data related to pagination
   - `index`: shows the current page index
@@ -435,7 +435,7 @@ The `since_id` is used (instead of `date`) because this way the sorting and pagi
 
 ### SSL
 
-Use SSL whenever possible. It provides encryption even through unencrypted networks and simplies authentication efforts. Simple API tokens will work just well.
+Use SSL whenever possible. It provides encryption even through unencrypted networks and simplifies authentication efforts. Simple API tokens will work just well.
 
 **Be careful!** Once you enabled SSL on your API don't allow unsecured connections (e.g. plain http connections).
 
@@ -445,7 +445,7 @@ Use SSL whenever possible. It provides encryption even through unencrypted netwo
 
 Up to 80% bandwidth saving can be achieved when using gzip compression (according to Twitter and Stack Exchange). Although this requires additional CPU time to (un)compress the results, the trade-off with network costs usually makes it very worthwhile.
 
-Most frameworks/servers provide an easy way to setup gzip compression and most of the time you can also configure a minimum response size which the compression is enabled on. This way you don't overload the CPU with compressing tiny chuncks of responses.
+Most frameworks/servers provide an easy way to setup gzip compression and most of the time you can also configure a minimum response size which the compression is enabled on. This way you don't overload the CPU with compressing tiny chunks of responses.
 
 In order to receive a gzip-encoded response you must do two things:
 
