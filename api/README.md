@@ -4,7 +4,7 @@
 
   1. [Key Requirements](#key-requirements)
   1. [Resources](#resources)
-  1. [HTTP Request Methods](#http-request-methods)
+  1. [HTTP Verbs](#http-verbs)
   1. [Url Naming](#url-naming)
   1. [Response](#response)
   1. [Serialization Practices](#serialization-practices)
@@ -50,9 +50,9 @@ After the resources are defined you need to find out what kind of actions should
 
 **You should never ever** leak any implementation details via your API.
 
-## HTTP Request Methods
+## HTTP Verbs
 
-The HTTP request methods `GET`, `POST`, `PUT`, `PATCH` and `DELETE` have specific meaning in manipulating these.
+The HTTP request methods `GET`, `POST`, `PUT`, `PATCH` and `DELETE` have specific meaning in manipulating the resources.
 
 ### GET
 
@@ -157,6 +157,8 @@ Intended for cases in which the client seems to have erred. The server **should*
 The server is aware that it has erred or is incapable of performing the request. The server **should** include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These response codes are applicable to any request method.
 
 > Only a few of the many possible error and status codes are commonly seen on the Internet.
+
+### Possible status codes by Verbs
 
 #### GET
 - `200 OK` - The request is successful and the resource is retrieved.
