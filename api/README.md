@@ -386,7 +386,7 @@ The response conists of two parts:
 For example:
 ```javascript
 {
-  "elements" : [
+  "elements": [
     // ...
   ],
   "page": {
