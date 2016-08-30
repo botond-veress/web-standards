@@ -212,28 +212,147 @@ JSON output representation for something like this would look like:
 
 > In non-production environments the error resource might contain additional fields (e.g. stacktrace, timestamp, etc).
 
-### Casing
+### Serialization Practices
 
 To provide better readability all the resource fields should be written in `snake_case`.
-For example:
-```javascript
-{
-  "created_at": 1470191016653,
-  "updated_at": 1470391016653
-}
-```
 
-#### Best practices to name fields
+#### Identifier
 
-- For dates and timestamps use the `_at` suffix whenever possible, e.g `"created_at": 1470191016653`.
-- For booleans never include `is_` or `has_` prefixes, instead try to use adjectives and verbs in past tense, e.g. `"completed: true"`, `"locked": false`, `"visible": true`, etc.
-- For lists try to use the plural form instead of suffixing it with `_list`, e.g. ~~`category_list`~~ should become `categories`.
-- For resource identifiers use the field `id`. When there is a reference to another resource then prefix it with the name of the relation, e.g. a post would have an author as `author_id`:
+Use the field `id`. When there is a reference to another resource then prefix it with the name of the relation, e.g. a post would have an author as `author_id`:
 
 ```javascript
 {
   "id": 1,
   "author_id": 12
+}
+```
+
+#### Boolean
+
+Never include `is_` or `has_` prefixes, instead try to use adjectives and verbs in past tense.
+
+For example:
+```javascript
+{
+  "completed": true,
+  "locked": false,
+  "visible": true
+}
+```
+
+> In case of having multiple flag-like booleans in the response consider using **bitmasking** instead.
+
+#### Bitmask
+
+Multiple boolean flags can be transformed into numerical flags which are combined into a single numeric value using bitmasking.
+
+```javascript
+{
+  "permission": {
+    "can_create_comment": true,
+    "can_delete_comment": false,
+    "can_update_comment": false,
+    "can_vote_comment": true
+  }
+}
+```
+
+becomes:
+
+```javascript
+{
+  "permission": {
+    "comment": 9
+  }
+}
+```
+
+where:
+
+```javascript
+const CAN_CREATE_COMMENT = 0b0001; // 1
+const CAN_DELETE_COMMENT = 0b0010; // 2
+const CAN_UPDATE_COMMENT = 0b0100; // 4
+const CAN_VOTE_COMMENT   = 0b1000; // 8
+
+permission.comment = CAN_CREATE_COMMENT | CAN_VOTE_COMMENT; // 1 | 8 = 9
+```
+
+#### Count
+
+Use the the name of the resource which you have counted with the `_count` suffix. Try to avoid the plural form of the resource name because that should mark a list and not a count.
+
+For example:
+```javascript
+{
+  "comment_count": 121
+}
+```
+
+#### Date
+
+Use the `_at` suffix whenever possible.
+Dates should be represented by timestamps (milliseconds since 1970.01.01).
+
+For example:
+```javascript
+{
+  "created_at": 1470191016653, // Wed Aug 03 2016 05:23:36 GMT+0300 (EEST)
+  "updated_at": 1470391016653  // Fri Aug 05 2016 12:56:56 GMT+0300 (EEST)
+}
+```
+
+#### List
+
+Try to use the plural form instead of suffixing it with `_list`, e.g. ~~`category_list`~~ should become `categories`.
+
+For example:
+```javascript
+{
+  "id": 13,
+  "title": "How to format JSON"
+  "tags": [
+    "json",
+    "format",
+    "programming",
+    "howto"
+  ]
+}
+```
+> If a request results in a list return the list directly instead of wrapping it into an object with a single field.
+
+#### Reference to another resource
+
+When referencing a resource from within another resource there are two approaches:
+
+##### Id notation
+
+Include only the id of the referenced resource as a field named after the relation of the two resources suffixed with `_id`.
+Use it if the client doesn't need to display any information about the referenced resource at this stage or already has the information referenced by that id.
+
+For example a blog post would look like this:
+```javascript
+{
+  "id": 13,
+  "title": "How to format JSON",
+  "author_id": 5 // the author of this post is the User with the id 5
+}
+```
+
+##### Resource notation
+
+Include the minimal required representation of the referenced resource named after the relation of the two resources.
+Use it if the client needs to display information about the referenced resource and it doesn't have the information yet.
+
+For example a blog post would look like this:
+```javascript
+{
+  "id": 13,
+  "title": "How to format JSON",
+  "author": {
+    "id": 5,
+    "name": "Johnny Pack"
+  }
 }
 ```
 
