@@ -63,12 +63,12 @@ The HTTP request methods `GET`, `POST`, `PUT`, `PATCH` and `DELETE` have specifi
 - Use query strings instead of request body.
 
 To retrieve the list of posts filtered by the keyword "awesome":
-```HTTP
+```javascript
 GET /posts?search=awesome
 ```
 
 To retrieve the post with id 31:
-```HTTP
+```javascript
 GET /posts/31
 ```
 
@@ -79,9 +79,11 @@ GET /posts/31
 - Multiple POST requests to the same URL create duplicate records.
 
 To create a post:
-```HTTP
+```javascript
 POST /posts
+```
 Request payload:
+```javascript
 {
   "title": "Awesome title",
   "content": "even more awesomeness"
@@ -97,9 +99,11 @@ Request payload:
 - It should be used when the client is aware of the url of the resource.
 
 To update the post with id 31:
-```HTTP
+```javascript
 PUT /posts/31
+```
 Request payload:
+```javascript
 {
   "title": "Awesome title",
   "content": "even more awesomeness"
@@ -114,9 +118,11 @@ Request payload:
 - Updated attributes of the resource should be provided only.
 
 To update the content of the post with id 31:
-```HTTP
+```javascript
 PATCH /posts/31
+```
 Request payload:
+```javascript
 {
   "content": "less awesomeness"
 }
@@ -129,7 +135,7 @@ Request payload:
 - Deletes a resource.
 
 To delete the post with id 31:
-```HTTP
+```javascript
 DELETE /posts/31
 ```
 
